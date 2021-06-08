@@ -1,0 +1,13 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+
+<h1>Corrientes de la subastas</h1>
+
+<ul>
+    {% for corriente in corrientes%}
+        <li>{{corriente}}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

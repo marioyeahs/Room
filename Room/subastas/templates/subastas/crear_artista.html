@@ -1,0 +1,16 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+
+<h1>Crear Artista</h1>
+
+<form method="post" action="{% url 'crear_artista' %}">
+    {% csrf_token %}
+    <input type="text" name="nombre" placeholder="Nombre">
+    <input type="text" name="apellidos" placeholder="Apellidos">
+    <input type="text" name="nacionalidad" placeholder="Nacionalidad">
+    <input type="text" name="corriente" placeholder="Corriente">
+    <input type="submit" value="Crear Artista">
+</form>
+
+{% endblock %}

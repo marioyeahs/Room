@@ -1,0 +1,17 @@
+{% extends "subastas/layout.html" %}
+
+{% block body%}
+
+<form action="{%url 'crear_sala'%}" method="POST">
+    {% csrf_token %}
+    <select name="obra">
+        {% for obra in obras %}
+            <option value="{{obra.nombre}}">{{obra.nombre}}</option>
+        {% endfor %}
+    </select>
+    <input type="number" name="costo_inicial">
+    <input type="date" name="fecha_cierre">
+    <input type="submit" value="Crear">
+</form>
+
+{% endblock %}

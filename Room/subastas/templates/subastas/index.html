@@ -1,0 +1,18 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+    <h1>ROOM</h1>
+    <h2>El sitio de subastas de obras de arte mas grande de México</h2>
+    <p>Salas</p>
+    <a href="{% url 'corrientes' %}">Ver las corrientes de las obras en subasta</a>
+    <ol>
+        {%for sala in salas %}
+            <li> <a href="{% url 'sala' sala.id %}">{{sala.articulo}}</a> </li>
+        {%empty%}
+            <li>No hay salas</li>
+        {%endfor%}
+    </ol>
+    <a href="{% url 'crear_sala' %}">Crear sala</a>
+    <a href="{% url 'crear_obra' %}">Crear obra</a>
+    <a href="{% url 'crear_artista' %}">Crear artista</a>
+{% endblock %}
