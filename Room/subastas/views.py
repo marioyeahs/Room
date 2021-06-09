@@ -1,8 +1,11 @@
 from django.db import connection
-from django.shortcuts import render
-from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.urls import reverse
+from django.contrib.auth.models import User
+
+
 
 from datetime import datetime
 
@@ -60,8 +63,7 @@ def bid(request,sala_id):
     
     if request.method == "POST":
         obra_sala = sala.articulo
-        cliente_sala =int(request.POST["cliente"])
-        comprador=Comprador.objects.get(pk=cliente_sala)
+        comprador=Comprador.objects.get(usuario_comprador=request.user)
         hora_puja = datetime.now()
         monto_puja = int(request.POST["monto"])  
         pujas = Puja.objects.filter(obra=obra_sala.id)
@@ -86,18 +88,19 @@ def corrientes(request):
 
 @login_required
 def crear_sala(request):
-    obras=Obra.objects.all()
-    sala=Sala.objects.last()
+    vendedor = Vendedor.objects.get(usuario_vendedor=request.user)
+    obras=Obra.objects.filter(duenio=vendedor)
+    # sala=Sala.objects.last()
     if request.method == "POST":
-        obra = request.POST["obra"]
-        articulo=Obra.objects.get(nombre=obra)
+        articulo = request.POST["obra"]
+        obra=Obra.objects.get(nombre=articulo)
         hora_sala = datetime.now()
-        duenio = Comprador.objects.get(pk=articulo.duenio.id)
+        duenio = Comprador.objects.get(usuario_comprador=request.user)
         costo_inicial = request.POST["costo_inicial"]
         fecha_cierre= request.POST["fecha_cierre"]
-        hora_puja = datetime.now()
-        Puja.objects.create(obra=articulo,cliente=duenio,hora=hora_puja,monto=costo_inicial)
-        Sala.objects.create(articulo=articulo,apertura=hora_sala,costo_inicial=costo_inicial,fecha=fecha_cierre)
+        hora = datetime.now()
+        Puja.objects.create(obra=obra,cliente=duenio,hora=hora,monto=costo_inicial)
+        Sala.objects.create(articulo=obra,apertura=hora_sala,costo_inicial=costo_inicial,fecha=fecha_cierre)
         return HttpResponseRedirect(reverse('index'))
     
     return render(request,"subastas/crear_sala.html",{
@@ -107,19 +110,16 @@ def crear_sala(request):
 @login_required
 def crear_obra(request):
     artistas = Artista.objects.all()
-    duenios = Vendedor.objects.all()
     if request.method == "POST":
         nombre = request.POST["nombre"]
-        artista = request.POST["artista"]
-        artista_obra = Artista.objects.get(nombre=artista)
-        duenio = request.POST["duenio"]
-        duenio_obra = Vendedor.objects.get(pk=duenio)
-        Obra.objects.create(nombre=nombre, artista=artista_obra,duenio=duenio_obra)
+        artista_obra = request.POST["artista"]
+        artista = Artista.objects.get(nombre=artista_obra)
+        duenio = Vendedor.objects.get(usuario_vendedor=request.user)
+        Obra.objects.create(nombre=nombre, artista=artista,duenio=duenio)
         return HttpResponseRedirect(reverse('crear_sala'))
     
     return render(request,"subastas/crear_obra.html",{
         "artistas": artistas,
-        "duenios":duenios,
     })
 
 @login_required

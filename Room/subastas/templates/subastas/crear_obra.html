@@ -11,11 +11,6 @@
             <option value={{artista.nombre}}>{{artista.nombre}} {{artista.apellidos}}</option>
         {% endfor %}
     </select>
-    <select name="duenio">
-        {% for duenio in duenios%}
-        <option value={{duenio.id}}>{{duenio.usuario_vendedor.nombre}}</option>
-        {% endfor %}
-    </select>
     <input type="submit" value="Crear">
 </form>
 

@@ -28,15 +28,15 @@ class Usuario(models.Model):
 
 class Comprador(models.Model):
     # si se elimina un usuario, el comprador tambien se elimina
-    usuario_comprador = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="compradores")
+    usuario_comprador = models.OneToOneField(User, on_delete=models.CASCADE, related_name="compradores")
     def __str__(self):
-        return f"ID comprador:  {self.usuario_comprador}"
+        return f"Comprador:  {self.usuario_comprador}"
 
 
 class Vendedor(models.Model):
-    usuario_vendedor = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="vendedores")
+    usuario_vendedor = models.OneToOneField(User, on_delete=models.CASCADE, related_name="vendedores")
     def __str__(self):
-        return f"ID vendedor:   {self.usuario_vendedor}"
+        return f"Vendedor:   {self.usuario_vendedor}"
 
 class Obra(models.Model):
     nombre = models.CharField(max_length=255, default="Obra")

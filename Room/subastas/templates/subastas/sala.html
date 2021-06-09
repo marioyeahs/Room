@@ -5,13 +5,13 @@
 <h1>SUBASTA</h1>
     {{sala.id}} - {{sala.articulo.nombre}} - Empieza en ${{sala.costo_inicial}}.00 mxn
 <h1>Pujas</h1>
-<ol>
+<ul>
     {% for puja in pujas %}
-        <li>{{puja.monto}}</li>
+        <li>${{puja.monto}}.00 mxn - {{puja.cliente.usuario_comprador.first_name}}</li>
     {% empty %}
         <li>No se han realziado pujas</li>
     {% endfor %} 
-</ol>
+</ul>
 
 <h2>Añadir puja</h2>
 {% if mensaje %}
@@ -19,11 +19,6 @@
 {% endif %}
 <form method="post" action="{% url 'bid' sala.id %}">
     {% csrf_token %}
-    <select name="cliente">
-        {% for comprador in compradores %}
-            <option value="{{comprador.id}}">{{comprador.usuario_comprador.nombre}}</option>
-        {% endfor %}
-    </select>
     <input name="monto" type="number">
     <input type="submit" value="Pujar">
 </form>
