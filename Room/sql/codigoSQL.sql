@@ -86,30 +86,61 @@ CREATE VIEW OBRAS_PUJAS_MAYORES_1000 AS
 	WHERE ARTICULO_ID=OBRA_ID AND MONTO>1000;
 	
 SELECT * FROM OBRAS_PUJAS_MAYORES_1000;
----------------------------------------
 
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 --DISPARADORES
-------------------------------------------------
+------------------------------------------------------------------------------------------------
 --ES NECESARIO CREAR SP PARA QUE SE DISPAREN LOS TRIGGERS
-
---este se ejecuta antes o despues de un INSERT,DELETE,UPDATE en una tabla
+--triggers se ejecutan antes o despues de un INSERT,DELETE,UPDATE en una tabla
 --el trigger ejecuta un SP(funcion) cuando el disparador se active, no debe recibir argumentos y retornar TRIGGER
---un mismo SP puede ejecutarse por diferentes disparadores
-
+--un mismo SP(funcion) puede ejecutarse por diferentes disparadores
+------------------------------------------------------------------------------------------------
 --3 triggers, uno para insertar, otro para eliminar y otro para actualizar
-
--- 1, después de modificar el valor inicial en una sala, eliminar las pujas menores a la obra de esa sala
---------------------------------------------------------------------------------------------------
---procedimiento almacenado para eliminar las pujas menores al valor con el que se modificó 
-CREATE OR REPLACE FUNCTION eliminar_pujas() RETURN TRIGGER AS $eliminar_pujas$
-DECLARE
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+-- 1, despues de registrar USER en django, INSERTA en ambas tablas, de compador y vendedor
+--funcion que va dentro del trigger
+CREATE FUNCTION SP_FuncTrigger_InsertarCompradorVendedor() RETURNS TRIGGER
+AS
+$$ 
 BEGIN
-	SELECT 
+	INSERT INTO subastas_comprador VALUES(new.id,new.id);
+	INSERT INTO subastas_vendedor VALUES(new.id,new.id);
+--SIEMPRE RETURN NEW, REALIZA LA ACCION CON LA NUEVA INFORMACIÓN
+RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+--trigger, se dispara después de aniadir una fila a la tabla auth_user
+CREATE TRIGGER TR_InsertarCompradorVendedor AFTER INSERT ON auth_user
+FOR EACH ROW
+	EXECUTE PROCEDURE SP_FuncTrigger_InsertarCompradorVendedor()
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+--2, antes de eliminar el usuario, borrar su id de la tabla de compradores y vendedores
+CREATE FUNCTION SP_FuncTrigger_EliminarCompradorVendedor() RETURNS TRIGGER 
+AS
+$$
+BEGIN
+	DELETE FROM subastas_comprador WHERE (id=old.id);
+	DELETE FROM subastas_vendedor WHERE (id=old.id);
+RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+--TRIGGER
+CREATE TRIGGER TR_EliminarCompradorVendedor BEFORE DELETE ON auth_user
+FOR EACH ROW
+	EXECUTE PROCEDURE SP_FuncTrigger_EliminarCompradorVendedor()
 
 
--- 2, despues de insertar un cliente, insertarlo en las tablas de comprador y vendedor
--- 3, 
-select * from subastas_sala WHERE ID=3;
 
 
-select * from auth_user
+
+
+select * from auth_user;select * from subastas_comprador;
+select * from subastas_vendedor;
