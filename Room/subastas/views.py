@@ -133,3 +133,14 @@ def crear_artista(request):
         return HttpResponseRedirect(reverse('crear_obra'))
 
     return render(request, "subastas/crear_artista.html")
+
+@login_required
+def mis_ofertas(request):
+    usuario = request.user.id
+    cliente = Comprador.objects.get(pk=usuario)
+    ofertas = Puja.objects.filter(cliente=cliente.id)
+    return render(request,"subastas/mis_ofertas.html",{
+        "ofertas":ofertas,
+    })
+
+
