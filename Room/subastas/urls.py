@@ -12,5 +12,6 @@ urlpatterns = [
     path("crear_obra",views.crear_obra,name="crear_obra"),
     path("crear_artista",views.crear_artista,name="crear_artista"),
     path("mis_ofertas", views.mis_ofertas,name="mis_ofertas"),
+    path("mis_obras",views.mis_obras,name="mis_obras"),
 
 ]
