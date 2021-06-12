@@ -1,0 +1,16 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+
+{% if ofertas %}
+
+    <ol class="list-group list-group-numbered">
+        {% for oferta in ofertas %}
+        <li class="list-group-item">-    ${{oferta.monto}}.00 mxn en {{oferta.obra.nombre}}</li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <li class="list-group-item">No has realziado pujas</li>
+{% endif %}
+
+{% endblock %}

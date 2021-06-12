@@ -1,15 +1,14 @@
 {% extends "subastas/layout.html" %}
 
 {% block body %}
-    <h1>ROOM</h1>
-    <h2>El sitio de subastas de obras de arte mas grande de México</h2>
-    <p>Salas</p>
-    <a href="{% url 'corrientes' %}">Ver las corrientes de las obras en subasta</a>
-    <ol>
+
+
+    <ul class="list-group list-group-flush">
         {%for sala in salas %}
-            <li> <a href="{% url 'sala' sala.id %}">{{sala.articulo}}</a> </li>
+            <li class="list-group-item"> <a href="{% url 'sala' sala.id %}">Obra: {{sala.articulo.nombre}} Artista:{{sala.articulo.artista}}</a> </li>
         {%empty%}
-            <li>No hay salas</li>
+            <li class="list-group-item">No hay salas</li>
         {%endfor%}
-    </ol>
+    </ul>
+
 {% endblock %}

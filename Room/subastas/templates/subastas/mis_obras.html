@@ -1,0 +1,18 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+
+{% if obras %}
+    <ol>
+        {% for obra in obras %}
+        <!-- <li> <a href="{% url 'sala' sala.id %}"> {{sala.articulo.nombre}}</a> </li> -->
+        <li class="list-group-item"> <a href="{% url 'sala' obra.id %}">{{sala.articulo.nombre}}</a> </li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <li class="list-group-item">No has realizado ofertas</li>
+{% endif %}
+
+
+
+{% endblock %}

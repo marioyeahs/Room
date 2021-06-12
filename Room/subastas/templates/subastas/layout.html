@@ -10,25 +10,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'subastas/style.css'%}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
 </head>
 <body>
-    <a href="{% url 'index' %}">ROOM</a>
-    <p>Paso 1</p>
-    <a href="{% url 'crear_artista' %}">Crear artista</a>
-    <p>Paso 2</p>
-    <a href="{% url 'crear_obra' %}">Crear obra</a>
-    <p>Paso 3</p>
-    <a href="{% url 'crear_sala' %}">Crear sala</a>
+    <main>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'index' %}">Room</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Salas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Obras</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pasos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{% url 'crear_artista' %}">Paso 1 - Crear artista </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'crear_obra' %}">Paso 2 - Crear obra</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'crear_sala' %}">Paso 3 - Crear sala</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <form class="container-fluid justify-content-end d-flex">
+                        {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                Bienvenide, {{ user.first_name }} {{ user.last_name }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item " href="{% url 'mis_ofertas' %}">Ver mis ofertas</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'mis_obras' %}">Ver mis obras</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <li><a href=""><a></li>
+                            <button class="btn btn-outline-success me-2" type="button"> <a href="{% url 'login'%}?next={{request.path}}">Iniciar Sesión</a></button>
+                            <button class="btn btn-sm btn-outline-secondary" type="button"><a href="#">Crear cuenta</a></button>
+                    {% endif %} 
+                        
+                        
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+    </main>
     
-    <ul class="sidebar-nav">
-        {% if user.is_authenticated %}
-            <li>Bienvenide, {{ user.first_name }} {{ user.last_name }}</li>
-            <li><a href="{% url 'logout'%}?next={{request.path}}">Cerrar Sesión</a></li>
-        {% else %}
-            <li><a href="{% url 'login'%}?next={{request.path}}">Iniciar Sesión<a></li>
-        {% endif %} 
+
     </ul>
     {% block body %}
     {% endblock %}
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Place sticky footer content here.</span>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 </body>
 </html>
