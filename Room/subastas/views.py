@@ -143,4 +143,12 @@ def mis_ofertas(request):
         "ofertas":ofertas,
     })
 
-
+@login_required
+def mis_obras(request):
+    usuario = request.user.id
+    cliente = Vendedor.objects.get(pk=usuario)
+    obras = Obra.objects.filter(duenio=cliente.id)
+    
+    return render(request,"subastas/mis_obras.html",{
+        "obras": obras,
+    })
