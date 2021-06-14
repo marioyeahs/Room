@@ -1,0 +1,18 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+
+<h1>Registro</h1>
+
+<form method="POST" action="{% url 'registro' %}">
+    {% csrf_token %}
+    <input type="text" name="nombre" placeholder="Nombre">
+    <input type="text" name="apellidos" placeholder="Apellidos">
+    <input type="text" name="usuario" placeholder="Usuario">
+    <input type="email" name="email" placeholder="e-mail">
+    <input type="password" name="contrasenia1" placeholder="Contraseña">
+    <input type="password" name="contrasenia2" placeholder="Confirma contraseña">
+    <input type="submit" value="Registrarme">
+</form>
+
+{% endblock %}
