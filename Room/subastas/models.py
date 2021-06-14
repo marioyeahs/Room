@@ -59,7 +59,8 @@ class Sala(models.Model):
     articulo = models.OneToOneField(Obra,on_delete=models.CASCADE, related_name="objeto")
     apertura = models.DateField()
     costo_inicial = models.IntegerField()
-    fecha = models.DateTimeField()
+    fecha_cierre = models.DateField()#fecha de cierre
+    hora_cierre = models.TimeField()
     def __str__(self):
         return f" {self.id}: {self.articulo}"
 
