@@ -13,5 +13,6 @@ urlpatterns = [
     path("crear_artista",views.crear_artista,name="crear_artista"),
     path("mis_ofertas", views.mis_ofertas,name="mis_ofertas"),
     path("mis_obras",views.mis_obras,name="mis_obras"),
+    path("registro",views.registro,name="registro"),
 
 ]
