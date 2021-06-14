@@ -3,7 +3,8 @@
 {% block body %}
 
 <h1>SUBASTA</h1>
-    {{sala.id}} - {{sala.articulo.nombre}} - Empieza en ${{sala.costo_inicial}}.00 mxn
+    {{sala.id}} - {{sala.articulo.nombre}} - Empieza en ${{sala.costo_inicial}}.00 mxn - Hasta el {{sala.fecha_cierre}} a las {{sala.hora_cierre}}
+    ahora:{{now}}
 <h1>Pujas</h1>
 <ul>
     {% for puja in pujas %}
@@ -16,11 +17,12 @@
 <h2>Añadir puja</h2>
 {% if mensaje %}
     <p>{{mensaje}}</p>
+{% else %}
+    <form method="post" action="{% url 'bid' sala.id %}">
+        {% csrf_token %}
+        <input name="monto" type="number">
+        <input type="submit" value="Pujar">
+    </form>
 {% endif %}
-<form method="post" action="{% url 'bid' sala.id %}">
-    {% csrf_token %}
-    <input name="monto" type="number">
-    <input type="submit" value="Pujar">
-</form>
 
 {% endblock %}

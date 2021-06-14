@@ -62,7 +62,7 @@
                     {% else %}
                         <li><a href=""><a></li>
                             <button class="btn btn-outline-success me-2" type="button"> <a href="{% url 'login'%}?next={{request.path}}">Iniciar Sesión</a></button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button"><a href="#">Crear cuenta</a></button>
+                            <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'registro' %}">Crear cuenta</a></button>
                     {% endif %} 
                         
                         
