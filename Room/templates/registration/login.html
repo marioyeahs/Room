@@ -27,12 +27,12 @@
 </div>
 
 <div>
-    <input type="submit" value="login" />
+    <input type="submit" value="Iniciar Sesión" />
     <input type="hidden" name="next" value="{{ next }}" />
 </div>
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+<p><a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a></p>
 
 {% endblock %}

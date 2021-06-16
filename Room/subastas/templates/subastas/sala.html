@@ -4,11 +4,10 @@
 
 <h1>SUBASTA</h1>
     {{sala.id}} - {{sala.articulo.nombre}} - Empieza en ${{sala.costo_inicial}}.00 mxn - Hasta el {{sala.fecha_cierre}} a las {{sala.hora_cierre}}
-    ahora:{{now}}
 <h1>Pujas</h1>
 <ul>
     {% for puja in pujas %}
-        <li>${{puja.monto}}.00 mxn - {{puja.cliente.usuario_comprador.first_name}}</li>
+        <li>${{puja.monto}}.00 mxn </li>
     {% empty %}
         <li>No se han realziado pujas</li>
     {% endfor %} 
@@ -17,6 +16,7 @@
 <h2>Añadir puja</h2>
 {% if mensaje %}
     <p>{{mensaje}}</p>
+    <p>Ultima puja de {{ultima_puja.cliente}}, por favor ponte en <a href="{% url 'contacto'%}" >contacto</a> con nosotros</p>
 {% else %}
     <form method="post" action="{% url 'bid' sala.id %}">
         {% csrf_token %}

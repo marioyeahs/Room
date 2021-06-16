@@ -1,0 +1,17 @@
+{% extends "subastas/layout.html" %}
+
+{% block body %}
+<h1>Editar Perfil</h1>
+
+<p>Nombre(s): {{user.first_name}}</p>
+<p>Apellido(s): {{user.last_name}}</p>
+<p>Usuario: {{user.username}}</p>
+<form action="{% url 'editar_perfil' %}" method="POST" >
+    {% csrf_token %}
+    <input type="text" name="nombre" placeholder="Nuevos nombre">
+    <input type="text" name="apellidos" placeholder="Nuevos apellidos">
+    <input type="password" name="password" placeholder="Nueva Contraseña">
+    <input type="submit" name="Confirmar">
+</form>
+
+{% endblock %}

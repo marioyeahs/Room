@@ -2,7 +2,7 @@
 
 {% block body %}
 
-
+    <h1>Salas disponibles en ROOM</h1>
     <ul class="list-group list-group-flush">
         {%for sala in salas %}
             <li class="list-group-item"> <a href="{% url 'sala' sala.id %}">Obra: {{sala.articulo.nombre}} Artista:{{sala.articulo.artista}}</a> </li>
