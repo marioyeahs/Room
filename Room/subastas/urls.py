@@ -14,5 +14,7 @@ urlpatterns = [
     path("mis_ofertas", views.mis_ofertas,name="mis_ofertas"),
     path("mis_obras",views.mis_obras,name="mis_obras"),
     path("registro",views.registro,name="registro"),
+    path("editar_perfil",views.editar_perfil,name="editar_perfil"),
+    path("contacto",views.contacto,name="contacto"),
 
 ]

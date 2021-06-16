@@ -5,8 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import datetime
-
-# Create your views here.
+import statistics
 
 from subastas.models import Artista, Sala, Obra, Puja, Comprador, Vendedor
 
@@ -23,14 +22,16 @@ def sala(request,sala_id):
     tiempo = now.time().hour #entero, hora actual en el servidor
     pujas = Puja.objects.filter(obra=sala.articulo)
     compradores = Comprador.objects.all()
-    if (sala.fecha_cierre < now.date() ):
-        mensaje = "Lo sentimos, la sala se ha cerrado"
+    if (sala.fecha_cierre <= now.date() and sala.hora_cierre <= now.time()):
+        mensaje = "Lo sentimos, la sala se ha cerrado",
+        ultima_puja = Puja.objects.filter(obra=sala.articulo).last()
         return render(request,'subastas/sala.html',{
         "sala": sala,
         "pujas": pujas,
         "compradores": compradores,
         "mensaje":mensaje,
         "now":now,
+        "ultima_puja": ultima_puja,
         })
     
     return render(request,'subastas/sala.html',{
@@ -48,21 +49,6 @@ def artista_info(request,artista_id):
 
     return render(request,"subastas/artista_info.html",context)
 
-# def registro(request):
-#     if request.method == "POST":
-#         nombre = request.POST["nombre"]
-#         apellido_materno = request.POST["apellido_materno"]
-#         apellido_paterno = request.POST["apellido_paterno"]
-#         correo = request.POST["correo"]
-#         celular = request.POST["celular"]
-#         direccion = request.POST["direccion"]
-#         colonia = request.POST["colonia"]
-#         cp_zip = request.POST["cp_zip"]
-
-#         with connection.cursor() as cursor:
-#             cursor.callproc('aniadir_usuario', [id, nombre,apellido_paterno,apellido_materno,correo,celular,direccion,colonia,cp_zip])
-
-#         return render(request,"subastas/index.html")
 
 @login_required
 def bid(request,sala_id):
@@ -172,11 +158,37 @@ def registro(request):
         email = request.POST["email"]
         contrasenia1 = request.POST["contrasenia1"]
         contrasenia2 = request.POST["contrasenia2"]
-        User.objects.create_user(usuario,email,contrasenia1)
-        request.user.first_name = nombre    
-        request.user.last_name = apellidos
-        if (contrasenia1==contrasenia2):
-            return HttpResponseRedirect(reverse('mis_ofertas'))
+        if (contrasenia1!=contrasenia2):
+            mensaje="Por favor verifica las contraseñas"
+            return render(request,"subastas/registro.html",{"mensaje":mensaje})
+        
+        user=User.objects.create_user(usuario,email,contrasenia1)
+        user.first_name = nombre    
+        user.last_name = apellidos
+        user.save()
+        return HttpResponseRedirect(reverse('mis_ofertas'))
     
     return render(request,"subastas/registro.html")
 
+@login_required
+def editar_perfil(request):
+    if request.method == "POST":
+        user = User.objects.get(username=request.user.username)
+        nombre = request.POST["nombre"]
+        apellidos = request.POST["apellidos"]
+        password = request.POST["password"]
+        user.first_name = nombre
+        user.last_name = apellidos
+        user.set_password(password)
+        user.save()
+        return HttpResponseRedirect(reverse('mis_ofertas', args=(user,)))
+    
+    return render(request,"subastas/editar_perfil.html")
+
+def contacto(request):
+    return render(request,"subastas/contacto.html")
+
+def articulos_mayores(request):
+    articulos = Sala.objects.filter(costo_inicial__gt=statistics.mean(costo_inicial))
+    usuarios=User.objects.filter(nombre="Leo",nombre="Diego")
+    pujas = Puja.objects.filter(monto__lt=statistics.mean(monto))
