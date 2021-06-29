@@ -29,7 +29,7 @@ class Usuario(models.Model):
 class Comprador(models.Model):
     # si se elimina un usuario, el comprador tambien se elimina
     usuario_comprador = models.OneToOneField(User, on_delete=models.CASCADE, related_name="compradores")
-    # obras_ganadas = models.OneToOneField('Obra', on_delete=models.CASCADE)
+    obras_compradas = models.OneToOneField('Obra', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Comprador:  {self.usuario_comprador}"
@@ -37,6 +37,8 @@ class Comprador(models.Model):
 
 class Vendedor(models.Model):
     usuario_vendedor = models.OneToOneField(User, on_delete=models.CASCADE, related_name="vendedores")
+    obras_vendidas = models.OneToOneField('Obra', on_delete=models.CASCADE)
+
     def __str__(self):
         return f"Vendedor:   {self.usuario_vendedor}"
 
